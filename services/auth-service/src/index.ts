@@ -12,6 +12,20 @@ const main = async () => {
     server.listen(port, () => {
       logger.info({ port }, "Auth Service is running Great");
     });
+
+    const shutDown = () => {
+      logger.info("Shutting Down the Service...");
+
+      Promise.all([])
+        .catch((e: unknown) => {
+          logger.error({ e }, "Error During shutdown tasks");
+        })
+        .finally(() => {
+          server.close(() => process.exit(0));
+        });
+    };
+    process.on("SIGINT", shutDown);
+    process.on("SIGTERM", shutDown);
   } catch (error) {
     logger.error({ error }, "Failed to start Auth Service");
     process.exit(1);
