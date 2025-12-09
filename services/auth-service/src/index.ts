@@ -1,10 +1,21 @@
-import { createApp } from "./app";
-import { env } from "./config/env";
+import { createApp } from "@/app";
+import { createServer } from "http";
+import { env } from "@/config/env";
+import { logger } from "./utils/logger";
 
-const app = createApp();
+const main = async () => {
+  try {
+    const app = createApp();
+    const server = createServer(app);
+    const port = env.AUTH_SERVICE_PORT || 6000;
 
-const PORT = env.AUTH_SERVICE_PORT;
+    server.listen(port, () => {
+      logger.info({ port }, "Auth Service is running Great");
+    });
+  } catch (error) {
+    logger.error({ error }, "Failed to start Auth Service");
+    process.exit(1);
+  }
+};
 
-app.listen(PORT, () => {
-  console.log(`Auth service is running on port ${PORT}`);
-});
+void main();
