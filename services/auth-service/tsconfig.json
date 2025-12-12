@@ -11,6 +11,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../../packages/common/src/http"],
   "references": [{ "path": "../../packages/common" }]
 }
