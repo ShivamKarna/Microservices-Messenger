@@ -49,6 +49,10 @@ coverage/
 tmp/
 temp/
 
+# Installation scripts
+*.sh
+get-docker.sh
+
 # Package manager
 .pnpm-store/
 .yarn/
