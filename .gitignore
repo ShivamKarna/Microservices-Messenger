@@ -39,7 +39,10 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
-
+.readme
+*.readme
+.txt
+*.txt
 # Testing
 coverage/
 .nyc_output/
