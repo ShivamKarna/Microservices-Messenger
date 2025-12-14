@@ -1,11 +1,10 @@
-import { DataTypes, Model, useInflection, type Optional } from 'sequelize';
+import { DataTypes, Model, type Optional } from 'sequelize';
 import { sequelize } from '@/db/sequelize';
 import { UserCredentails } from '@/models/user-credentials.model';
-import { execSync } from 'child_process';
 
 export interface RefreshTokenAttributes {
   id: string;
-  userID: string;
+  userId: string;
   tokenId: string;
   expiresAt: Date;
   createdAt: Date;
@@ -22,7 +21,7 @@ export class RefreshToken
   implements RefreshTokenAttributes
 {
   declare id: string;
-  declare userID: string;
+  declare userId: string;
   declare tokenId: string;
   declare expiresAt: Date;
   declare createdAt: Date;
@@ -36,7 +35,7 @@ RefreshToken.init(
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
     },
-    userID: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false,
     },
@@ -71,7 +70,7 @@ UserCredentails.hasMany(RefreshToken, {
   onDelete: 'CASCADE',
 });
 
-UserCredentails.belongsTo(UserCredentails, {
+RefreshToken.belongsTo(UserCredentails, {
   foreignKey: 'userId',
   as: 'user',
 });
