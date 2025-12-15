@@ -1,28 +1,27 @@
-import { z, ZodObject, ZodRawShape } from "zod";
+import { z, ZodObject, ZodRawShape } from 'zod';
 
 interface EnvOptions {
   source?: NodeJS.ProcessEnv;
   serviceName?: string;
 }
 
-type SchemaOutput<TSchema extends ZodRawShape> = ZodObject<TSchema>["_output"];
+type SchemaOutput<TSchema extends ZodRawShape> = ZodObject<TSchema>['_output'];
 
 export const createEnv = <TSchema extends ZodRawShape>(
   schema: ZodObject<TSchema>,
-  options: EnvOptions = {}
+  options: EnvOptions = {},
 ): SchemaOutput<TSchema> => {
-  const { source = process.env, serviceName = "service" } = options;
+  const { source = process.env, serviceName = 'service' } = options;
   const parsed = schema.safeParse(source);
 
   if (!parsed.success) {
     const formattedErrors = parsed.error.format();
     throw new Error(
-      `[${serviceName}] Environment Variable validation Faled : ${JSON.stringify(formattedErrors)}`
+      `[${serviceName}] Environment Variable validation Faled : ${JSON.stringify(formattedErrors)}`,
     );
   }
 
   return parsed.data;
 };
 
-export type EnvSchema<TShape extends ZodRawShape> =
-  ZodObject<TShape>["_output"];
+export type EnvSchema<TShape extends ZodRawShape> = ZodObject<TShape>['_output'];
