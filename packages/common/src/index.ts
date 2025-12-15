@@ -2,6 +2,7 @@ import { appendFile } from 'fs';
 export * from './logger';
 export * from './env';
 export type { Logger } from 'pino';
+export * from './http/validate-request';
 export { z } from 'zod';
 export * from './errors/http-error';
 export * from './http/asyncHandler';
