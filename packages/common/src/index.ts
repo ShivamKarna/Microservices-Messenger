@@ -6,3 +6,4 @@ export * from './http/validate-request';
 export { z } from 'zod';
 export * from './errors/http-error';
 export * from './http/asyncHandler';
+export * from './http/httpCodes';

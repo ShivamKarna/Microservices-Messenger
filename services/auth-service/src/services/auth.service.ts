@@ -2,7 +2,7 @@ import { sequelize } from '@/db/sequelize';
 import { RefreshToken, UserCredentails } from '@/models';
 import { AuthResponse, RegisterInput } from '@/types/auth';
 import { hashPassword, signAccessToken, signRefreshToken } from '@/utils/token';
-import { HttpError } from '@chatapp/common';
+import { HTTP_STATUS, HttpError } from '@chatapp/common';
 import { Op, Transaction } from 'sequelize';
 import crypto from 'crypto';
 
@@ -19,7 +19,7 @@ export const register = async (input: RegisterInput): Promise<AuthResponse> => {
     where: { email: { [Op.eq]: input.email } },
   });
   if (existingUser) {
-    throw new HttpError(409, 'User with thiis email already exists');
+    throw new HttpError(HTTP_STATUS.CONFLICT, 'User with thiis email already exists');
   }
   const transaction = await sequelize.transaction();
   try {
