@@ -1,4 +1,3 @@
-import { error } from 'console';
 import type { RequestHandler, Response, Request, NextFunction } from 'express';
 
 export type AsyncHandler = (req: Request, res: Response, next: NextFunction) => Promise<unknown>;
