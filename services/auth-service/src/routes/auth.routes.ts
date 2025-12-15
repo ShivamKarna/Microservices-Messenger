@@ -1,3 +1,8 @@
-import { z } from "zod";
+import { registerHandler } from '@/controllers/auth.controller';
+import { validateRequest } from '@chatapp/common';
+import { Router } from 'express';
+import { registerSchema } from '@/routes/auth.schema';
 
-import { HttpError } from "@chatapp/common";
+export const authRouter: Router = Router();
+
+authRouter.post('/register', validateRequest({ body: registerSchema }), registerHandler);
