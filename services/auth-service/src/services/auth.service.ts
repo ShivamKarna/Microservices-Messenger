@@ -24,7 +24,7 @@ export const register = async (input: RegisterInput): Promise<AuthResponse> => {
   const transaction = await sequelize.transaction();
   try {
     const passwordHash = await hashPassword(input.password);
-    const user = await UserCredentails.create(
+    const userRecord = await UserCredentails.create(
       {
         email: input.email,
         displayName: input.displayName,
@@ -32,19 +32,22 @@ export const register = async (input: RegisterInput): Promise<AuthResponse> => {
       },
       { transaction },
     );
-    const refreshTokenRecord = await generateRefreshToken(user.id, transaction);
+    const refreshTokenRecord = await generateRefreshToken(userRecord.id, transaction);
     await transaction.commit();
 
     // give the tokens
-    const accessToken = signAccessToken({ userId: user.id, email: user.email });
-    const refreshToken = signRefreshToken({ userId: user.id, tokenId: refreshTokenRecord.tokenId });
+    const accessToken = signAccessToken({ userId: userRecord.id, email: userRecord.email });
+    const refreshToken = signRefreshToken({
+      userId: userRecord.id,
+      tokenId: refreshTokenRecord.tokenId,
+    });
 
     // create user
     const userData = {
-      id: user.id,
-      email: user.email,
-      displayName: user.displayName.toLowerCase(),
-      createdAt: user.createdAt.toISOString(),
+      id: userRecord.id,
+      email: userRecord.email,
+      displayName: userRecord.displayName.toLowerCase(),
+      createdAt: userRecord.createdAt.toISOString(),
     };
     // TODO : Publish event User Registerded
     return {
